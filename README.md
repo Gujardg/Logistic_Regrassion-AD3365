@@ -1,59 +1,73 @@
 # 💼 Employee Salary Classification Using Logistic Regression
 
-An end-to-end Machine Learning project implementing **Logistic Regression** to classify employees into Low Salary and High Salary categories based on their years of work experience using Python and Scikit-Learn.
+An end-to-end Machine Learning project implementing **Logistic Regression** to classify employees into Low Salary and High Salary categories based on their total working years using Python, Pandas, NumPy, Matplotlib, Seaborn and Scikit-Learn.
 
 ---
 
 ## 📋 1. Project Overview
 
-This project demonstrates the implementation of a Logistic Regression classification model to predict employee salary categories based on years of professional experience.
+This project demonstrates the implementation of a Logistic Regression classification model to classify employees into salary categories based on their work experience.
 
-The original salary dataset contains continuous salary values. These values are converted into two categories using the median salary as the classification threshold.
+Using the IBM HR Analytics Employee Attrition dataset, the project analyzes employee information and predicts whether an employee belongs to the Low Salary or High Salary category.
 
-The model learns the relationship between years of experience and salary categories and predicts whether an employee belongs to the Low Salary or High Salary category.
+The original monthly income values are converted into two categories using the median monthly income as the classification threshold.
 
-This project covers the complete Machine Learning workflow, including data preprocessing, feature scaling, model training, classification, probability prediction, confusion matrix analysis and model evaluation.
+The project covers the complete Machine Learning workflow, including data loading, data exploration, preprocessing, data visualization, feature scaling, model training, classification, probability prediction, confusion matrix analysis and model evaluation.
 
 ---
 
-## 📊 2. Dataset: Employee Salary Data
+## 📊 2. Dataset: IBM HR Analytics Employee Attrition Dataset
 
-**Dataset Name:** `Salary_Data_Linear_Regression.csv`
+**Dataset Name:** `HR-Employee-Attrition.csv`
 
-The dataset contains **30 records and 2 original features**.
+**Dataset Download Link:**
 
-### Dataset Features
+[Download IBM HR Employee Attrition Dataset](https://raw.githubusercontent.com/OmerFarukMerey/IBM-HR-Analytics-Employee-Attrition-Performance/main/HR-Employee-Attrition.csv)
+
+The original dataset contains **1,470 employee records and 35 columns**.
+
+### Dataset Features Used
 
 | Feature | Description |
 | :--- | :--- |
-| `YearsExperience` | Number of years of professional work experience |
-| `Salary` | Corresponding employee salary |
+| `TotalWorkingYears` | Total number of years of employee work experience |
+| `MonthlyIncome` | Monthly salary of the employee |
+| `SalaryCategory` | Newly created binary salary classification |
 
 ### Dataset Summary
 
 | Property | Value |
 | :--- | :--- |
-| Total Records | 30 |
-| Original Features | 2 |
-| Input Feature | YearsExperience |
+| Dataset Name | IBM HR Analytics Employee Attrition |
+| Total Records | 1,470 |
+| Original Columns | 35 |
+| Input Feature | TotalWorkingYears |
+| Original Salary Column | MonthlyIncome |
 | Target Variable | SalaryCategory |
-| Missing Values | 0 |
-| Training Samples | 24 |
-| Testing Samples | 6 |
+| File Format | CSV |
+| Missing Values | Checked during preprocessing |
 | Train-Test Ratio | 80:20 |
 
 ### Target Variable: SalaryCategory
 
-The original Salary column is converted into a binary classification variable using the median salary.
+The original `MonthlyIncome` column is converted into a binary classification variable using the median monthly income.
 
-The median salary of the dataset is **82,225.50**.
+The median is calculated from the loaded dataset using:
+
+```python
+median_salary = df['MonthlyIncome'].median()
+```
+
+The salary categories are created as follows:
 
 | Category | Label | Condition |
 | :--- | :---: | :--- |
-| Low Salary | 0 | Salary below median |
-| High Salary | 1 | Salary equal to or above median |
+| Low Salary | 0 | MonthlyIncome below median |
+| High Salary | 1 | MonthlyIncome equal to or above median |
 
-This converts the original regression-style salary data into a binary classification problem.
+This converts the original numerical salary values into a binary classification problem.
+
+**Note:** The original dataset also contains an `Attrition` column, but this project does not use it as the prediction target.
 
 ---
 
@@ -61,7 +75,7 @@ This converts the original regression-style salary data into a binary classifica
 
 Logistic Regression is a supervised Machine Learning algorithm used for classification problems.
 
-Unlike Linear Regression, which predicts continuous numerical values, Logistic Regression estimates the probability of an observation belonging to a particular class.
+It estimates the probability of an observation belonging to a particular class.
 
 ### Mathematical Formula
 
@@ -79,11 +93,11 @@ z=b_0+b_1X
 
 **Parameters:**
 
-- \(P(Y=1|X)\): Probability of High Salary.
-- \(X\): Years of Experience.
-- \(b_0\): Model intercept.
-- \(b_1\): Model coefficient.
-- \(e\): Euler's mathematical constant.
+- **P(Y=1|X):** Probability of High Salary.
+- **X:** Total Working Years.
+- **b₀:** Model intercept.
+- **b₁:** Model coefficient.
+- **e:** Euler's mathematical constant.
 
 ### Classification Rule
 
@@ -96,7 +110,7 @@ The predicted category is determined using a probability threshold of 0.5.
 
 ### Feature Scaling
 
-The project uses `StandardScaler()` from Scikit-Learn to standardize the YearsExperience feature.
+The project uses `StandardScaler()` from Scikit-Learn to standardize the `TotalWorkingYears` feature.
 
 Standardization transforms the input feature into a common scale, helping the Logistic Regression model during training.
 
@@ -106,94 +120,81 @@ Standardization transforms the input feature into a common scale, helping the Lo
 
 The complete implementation is available in [`Logistic_Regrassion.ipynb`](./Logistic_Regrassion.ipynb).
 
-The following steps were performed:
+The following steps are performed:
 
-1. **Library Importing:** Imported NumPy, Pandas, Matplotlib and Scikit-Learn libraries.
-2. **Data Loading:** Loaded the salary dataset using Pandas.
-3. **Data Exploration:** Examined dataset dimensions, information, statistical summary and missing values.
-4. **Data Preprocessing:** Created a new `SalaryCategory` column using the median salary.
-5. **Data Visualization:** Created a scatter plot to visualize the relationship between years of experience and salary categories.
-6. **Feature and Target Selection:** Selected `YearsExperience` as the independent variable (X) and `SalaryCategory` as the dependent variable (y).
-7. **Train-Test Split:** Divided the dataset into 80% training data and 20% testing data using `train_test_split()` with stratified sampling.
+1. **Library Importing:** Imported NumPy, Pandas, Matplotlib, Seaborn and Scikit-Learn libraries.
+2. **Data Loading:** Loaded the IBM HR employee dataset using Pandas.
+3. **Data Exploration:** Examined dataset dimensions, column names, information, statistical summary and missing values.
+4. **Data Preprocessing:** Created a new `SalaryCategory` column using the median of `MonthlyIncome`.
+5. **Data Visualization:** Created scatter plots to visualize the relationship between total working years and salary categories.
+6. **Feature and Target Selection:** Selected `TotalWorkingYears` as the independent variable (X) and `SalaryCategory` as the dependent variable (Y).
+7. **Train-Test Split:** Divided the dataset into 80% training data and 20% testing data using `train_test_split()`.
 8. **Feature Scaling:** Applied `StandardScaler()` to standardize the training and testing features.
 9. **Model Creation:** Initialized the Logistic Regression model using `LogisticRegression()`.
-10. **Model Training:** Trained the model using `model.fit(X_train, y_train)`.
+10. **Model Training:** Trained the model using `model.fit(X_train, Y_train)`.
 11. **Classification Prediction:** Predicted salary categories using `model.predict()`.
 12. **Probability Prediction:** Calculated class probabilities using `model.predict_proba()`.
 13. **Model Evaluation:** Evaluated the model using Accuracy, Precision, Recall and F1 Score.
 14. **Confusion Matrix:** Generated and visualized the confusion matrix.
 15. **Classification Report:** Generated a detailed classification report.
-16. **Probability Visualization:** Plotted the Logistic Regression probability curve.
-17. **New Data Prediction:** Predicted salary categories for employees with 5 and 7 years of experience.
-18. **Model Serialization:** Saved and loaded the trained model and scaler using Python Pickle.
+16. **Probability Visualization:** Plotted the Logistic Regression probability curve using `TotalWorkingYears`.
+17. **New Data Prediction:** Predicted salary categories for employees with different working experience values.
+18. **Model Serialization:** Saved the trained Logistic Regression model and scaler using Pickle.
 
 ---
 
 ## 📈 5. Model Performance Results
 
-The model was evaluated using the testing dataset containing 6 unseen records.
+The Logistic Regression model is evaluated using the testing dataset.
+
+The dataset is divided into training and testing sets using an 80:20 ratio.
 
 ### Evaluation Metrics
 
-| Metric | Result | Interpretation |
-| :--- | :---: | :--- |
-| Accuracy | 1.00 | 100% correct predictions |
-| Precision | 1.00 | 100% precision |
-| Recall | 1.00 | 100% recall |
-| F1 Score | 1.00 | 100% F1 Score |
+| Metric | Description |
+| :--- | :--- |
+| **Accuracy** | Measures the percentage of correct predictions |
+| **Precision** | Measures how many predicted positive cases are correct |
+| **Recall** | Measures how many actual positive cases are correctly identified |
+| **F1 Score** | Harmonic mean of Precision and Recall |
+
+The actual evaluation values are generated when the Google Colab notebook is executed.
 
 ### Confusion Matrix
 
-The model generated the following confusion matrix:
+The confusion matrix is used to evaluate the classification results.
 
-\[
-\begin{bmatrix}
-3 & 0\\
-0 & 3
-\end{bmatrix}
-\]
+It displays:
 
-| Actual / Predicted | Low Salary (0) | High Salary (1) |
-| :--- | :---: | :---: |
-| Low Salary (0) | 3 | 0 |
-| High Salary (1) | 0 | 3 |
+- True Positive (TP)
+- True Negative (TN)
+- False Positive (FP)
+- False Negative (FN)
 
-### Confusion Matrix Interpretation
-
-- **True Positive (TP):** 3
-- **True Negative (TN):** 3
-- **False Positive (FP):** 0
-- **False Negative (FN):** 0
+The confusion matrix and classification report are generated using the testing data.
 
 ### Key Result
 
-The Logistic Regression model correctly classified all 6 testing records and achieved **100% accuracy** on the test dataset.
+The model classifies employees into Low Salary and High Salary categories based on their total working years.
 
-**Note:** The testing dataset contains only 6 records. Therefore, the results should not be interpreted as a guarantee of perfect performance on larger or unseen datasets.
+The final accuracy and other evaluation metrics depend on the actual model execution.
 
 ---
 
 ## 🔍 6. Prediction on New Data
 
-The trained Logistic Regression model was tested with new employee experience values.
+The trained Logistic Regression model can be tested with new employee working experience values.
 
-### Prediction 1: Employee with 5 Years of Experience
+For example:
 
-| Parameter | Result |
+| Parameter | Value |
 | :--- | :--- |
-| Years of Experience | 5 |
-| Predicted Category | Low Salary (0) |
-| Low Salary Probability | 64.22% |
-| High Salary Probability | 35.78% |
+| Total Working Years | 5 |
+| Total Working Years | 7 |
 
-### Prediction 2: Employee with 7 Years of Experience
+The model predicts whether the employee belongs to the Low Salary or High Salary category.
 
-| Parameter | Result |
-| :--- | :--- |
-| Years of Experience | 7 |
-| Predicted Category | High Salary (1) |
-
-These predictions demonstrate how the trained Logistic Regression model classifies new employee records based on their work experience.
+The predicted category and probability values are generated using the trained model.
 
 ---
 
@@ -205,6 +206,7 @@ These predictions demonstrate how the trained Logistic Regression model classifi
 | NumPy | Numerical calculations |
 | Pandas | Data manipulation and analysis |
 | Matplotlib | Data visualization |
+| Seaborn | Statistical data visualization |
 | Scikit-Learn | Machine Learning model development |
 | StandardScaler | Feature standardization |
 | Pickle | Model saving and loading |
@@ -227,16 +229,16 @@ cd Logistic_Regrassion-AD3365
 ### Step 2: Install Required Libraries
 
 ```bash
-pip install numpy pandas matplotlib scikit-learn notebook
+pip install numpy pandas matplotlib seaborn scikit-learn notebook
 ```
 
 ### Step 3: Dataset Setup
 
-Make sure the following dataset is available in your project directory:
+Download the following CSV dataset:
 
-```text
-Salary_Data_Linear_Regression.csv
-```
+`HR-Employee-Attrition.csv`
+
+Place the dataset in your project directory or upload it directly to Google Colab.
 
 ### Step 4: Run the Jupyter Notebook
 
@@ -244,7 +246,7 @@ Salary_Data_Linear_Regression.csv
 jupyter notebook Logistic_Regrassion.ipynb
 ```
 
-Alternatively, open the notebook using Google Colab and upload the required CSV dataset when prompted.
+Alternatively, open the notebook using Google Colab and execute each code cell.
 
 ---
 
@@ -255,7 +257,7 @@ Logistic_Regrassion-AD3365/
 │
 ├── Logistic_Regrassion.ipynb
 │
-├── Salary_Data_Linear_Regression.csv
+├── HR-Employee-Attrition.csv
 │
 ├── logistic_model.pkl
 │
@@ -264,15 +266,15 @@ Logistic_Regrassion-AD3365/
 └── README.md
 ```
 
-**File Description:**
+### File Description
 
 - `Logistic_Regrassion.ipynb` – Complete implementation of the Logistic Regression model.
-- `Salary_Data_Linear_Regression.csv` – Dataset used for training and testing.
+- `HR-Employee-Attrition.csv` – IBM HR employee dataset used for training and testing.
 - `logistic_model.pkl` – Saved trained Logistic Regression model.
 - `scaler.pkl` – Saved StandardScaler object.
 - `README.md` – Project documentation.
 
-*Note: The Pickle files are generated by executing the model-saving section of the notebook.*
+**Note:** The Pickle files are generated by executing the model-saving section of the notebook.
 
 ---
 
@@ -283,7 +285,9 @@ Through this project, I gained practical knowledge of:
 - Fundamentals of Supervised Machine Learning.
 - Understanding Logistic Regression.
 - Difference between Linear Regression and Logistic Regression.
-- Converting continuous data into binary classes.
+- Loading and exploring CSV datasets.
+- Converting numerical salary values into binary classes.
+- Data preprocessing and feature selection.
 - Feature scaling using StandardScaler.
 - Training and testing classification models.
 - Understanding the Sigmoid Function.
@@ -296,11 +300,11 @@ Through this project, I gained practical knowledge of:
 
 ## 📝 11. Conclusion
 
-This project successfully demonstrates the implementation of Logistic Regression for employee salary classification using years of experience.
+This project demonstrates the implementation of Logistic Regression for employee salary classification using the IBM HR Analytics Employee Attrition Dataset.
 
-The trained model achieved 100% accuracy, precision, recall and F1 score on the test dataset containing 6 records.
+The model uses `TotalWorkingYears` as the input feature and `SalaryCategory` as the output variable. The salary categories are generated from the median monthly income.
 
-The project provided practical experience in data preprocessing, feature scaling, classification, probability prediction, model evaluation and model serialization using Python and Scikit-Learn.
+The project provides practical experience in data preprocessing, feature scaling, classification, probability prediction, model evaluation and model serialization using Python and Scikit-Learn.
 
 ---
 
@@ -314,6 +318,7 @@ The project provided practical experience in data preprocessing, feature scaling
 | :--- | :--- |
 | Project Name | Employee Salary Classification |
 | Algorithm | Logistic Regression |
+| Dataset | IBM HR Analytics Employee Attrition |
 | Domain | Machine Learning |
 | Programming Language | Python |
 | Repository Visibility | Public |
